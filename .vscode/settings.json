@@ -1,0 +1,8 @@
+{
+  "telemetry.enableCrashReporter": false,
+  "telemetry.enableTelemetry": false,
+  "files.exclude": {
+    "**/env": true,
+    "**/node_modules": true
+  }
+}
