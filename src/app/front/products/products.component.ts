@@ -22,14 +22,14 @@ export class ProductsComponent implements OnInit {
     private route: ActivatedRoute,
     private productService: ProductService,
     private shoppingCartService: ShoppingCartService
-  ) {
-    this.shoppingCartService.getCart().then(
-      cart => this.cart$ = cart
-    );
-   }
+  ) { }
 
-  async ngOnInit() {
-    this.cart$ = await this.shoppingCartService.getCart();
+  ngOnInit() {
+    setTimeout(
+      () => this.shoppingCartService.getCart().then(cart => this.cart$ = cart),
+      1500
+    )
+    
     this.populateProducts();
   }
 

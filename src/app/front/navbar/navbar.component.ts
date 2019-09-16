@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthService } from 'src/app/shared/_services/auth/auth.service';
 import { ShoppingCartService } from 'src/app/shared/_services/shopping-cart/shopping-cart.service';
 import { AppUser } from 'src/app/shared/_models/app-user';
@@ -10,22 +10,20 @@ import { Observable } from 'rxjs';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent {
   appUser: AppUser;
   collapse: boolean = true;
   cart$: Observable<ShoppingCart>;
 
   constructor(
     private auth: AuthService,
-    private shoppingCartService: ShoppingCartService
-  ) {}
+    shoppingCartService: ShoppingCartService
+  ) {
+    shoppingCartService.getCart().then(cart => this.cart$ = cart);
+    auth.appUser$.subscribe(appUser => this.appUser = appUser);
+  }
 
   logout() {
     this.auth.logout();
-  }
-
-  async ngOnInit() {
-    this.auth.appUser$.subscribe(appUser => this.appUser = appUser);
-    this.cart$ = await this.shoppingCartService.getCart();
   }
 }
