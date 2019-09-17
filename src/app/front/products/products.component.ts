@@ -27,7 +27,7 @@ export class ProductsComponent implements OnInit {
   ngOnInit() {
     setTimeout(
       () => this.shoppingCartService.getCart().then(cart => this.cart$ = cart),
-      1550
+      1500
     )
     
     this.populateProducts();
