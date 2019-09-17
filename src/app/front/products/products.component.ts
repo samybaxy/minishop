@@ -24,12 +24,10 @@ export class ProductsComponent implements OnInit {
     private shoppingCartService: ShoppingCartService
   ) { }
 
-  ngOnInit() {
-    setTimeout(
-      () => this.shoppingCartService.getCart().then(cart => this.cart$ = cart),
-      1500
-    )
-    
+  async ngOnInit() {
+    // A hack which should be fixed when redux is used
+    // for more efficient management of state
+    this.cart$ = this.shoppingCartService.getCartObservable();
     this.populateProducts();
   }
 

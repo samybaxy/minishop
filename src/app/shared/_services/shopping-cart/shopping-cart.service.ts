@@ -3,8 +3,8 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { ShoppingCartItem } from 'src/app/shared/_models/shopping-cart-item';
 import { Product } from 'src/app/shared/_models/product';
 import { ShoppingCart } from 'src/app/shared/_models/shopping-cart';
-import { Observable } from 'rxjs';
-import { take, map } from 'rxjs/operators';
+import { Observable, ReplaySubject } from 'rxjs';
+import { take, map, switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -12,12 +12,24 @@ import { take, map } from 'rxjs/operators';
 export class ShoppingCartService {
 
   constructor(private firestore: AngularFirestore) { }
+  private currentCartId= new ReplaySubject<string>();
 
   async getCart(): Promise<Observable<ShoppingCart>> {
     let cartId = await this.getOrCreateCartId();
+    this.currentCartId.next(cartId);
+
+    return this.firestoreCart(cartId);
+  }
+
+  firestoreCart(cartId: string) {
     return this.firestore.doc(`shopping-cart/${cartId}`)
       .valueChanges()
       .pipe(map((items: any) => new ShoppingCart(items)))
+  }
+
+  getCartObservable() {
+    return this.currentCartId
+    .pipe( switchMap(cartId => this.firestoreCart(cartId)) );
   }
 
   addToCart(product: Product) {
