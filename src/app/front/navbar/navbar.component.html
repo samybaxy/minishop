@@ -3,7 +3,12 @@
     <a class="navbar-brand" href="/">
       <i class="fa fa-leaf"></i>
     </a>
-    <button class="navbar-toggler" type="button" data-target="#navbars" aria-controls="navbars" [attr.aria-expanded]="!collapse" aria-label="Toggle navigation" (click)="collapse = !collapse">
+    <button (click)="collapse = !collapse" 
+      class="navbar-toggler" 
+      type="button" data-target="#navbars" 
+      aria-controls="navbars" 
+      [attr.aria-expanded]="!collapse" 
+      aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
   
@@ -39,6 +44,10 @@
           </div>
         </li>
       </ul>
+
+      <div *ngIf="viewPortWidth <= 760">
+        <product-filter [category]="category"></product-filter>
+      </div>
     </div>
   </div>
 </nav>

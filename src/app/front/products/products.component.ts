@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProductService } from 'src/app/shared/_services/product/product.service';
 import { ShoppingCartService } from 'src/app/shared/_services/shopping-cart/shopping-cart.service';
@@ -17,6 +17,7 @@ export class ProductsComponent implements OnInit {
   filteredProducts: Product[] = [];
   category: string;
   cart$: Observable<ShoppingCart>;
+  viewPortWidth: number = window.innerWidth;
 
   constructor(
     private route: ActivatedRoute,
@@ -29,6 +30,11 @@ export class ProductsComponent implements OnInit {
     // for more efficient management of state
     this.cart$ = this.shoppingCartService.getCartObservable();
     this.populateProducts();
+  }
+
+  @HostListener("window:resize", [])
+  resize() {
+    this.viewPortWidth = window.innerWidth;
   }
 
   private populateProducts() {
